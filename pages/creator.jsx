@@ -28,9 +28,11 @@ export default function Creator() {
 					</Link>
 
 					{/* <MintModal open={mintModalOpen} onClose={handleMintClose}/> */}
+					<Link href={"/showContent"}>
 					<h2 className="m-20 text-xl border-2 p-20 rounded-lg border-black w-[20%] text-center transition ease-in-out hover:scale-105 duration-500">
 						See Existing Colletion
 					</h2>
+					</Link>
 					<Link href={"/addContent"}>
 					<h2 className="m-20 text-xl border-2 p-20 rounded-lg border-black w-[20%] text-center transition ease-in-out hover:scale-105 duration-500">
 						Add Contents for Colletion

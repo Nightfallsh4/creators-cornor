@@ -157,7 +157,7 @@ export default function addContent() {
 				<div className="mx-5">
 					<Box sx={{ minWidth: 250 }}>
 						<FormControl fullWidth>
-							<InputLabel id="demo-simple-select-label">
+							<InputLabel>
 								Select Condition
 							</InputLabel>
 							<Select
