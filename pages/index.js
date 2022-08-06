@@ -1,5 +1,5 @@
-import Avatar from "@mui/material/Avatar"
 import Link from "next/link"
+import MintModal from "./MintModal"
 
 export default function Home() {
 	return (
