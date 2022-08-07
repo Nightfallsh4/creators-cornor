@@ -11,7 +11,7 @@ export default function Creator() {
 				<div className="flex justify-between">
 					<Link href={"/MintModal"}>
 						<h2
-							className="m-20 text-xl border-2 p-20 rounded-lg border-black w-[20%] text-center transition ease-in-out hover:scale-105 duration-500"
+							className="m-20 text-xl p-20 rounded-lg  bg-white  shadow-3xl  w-[20%] text-center transition ease-in-out hover:scale-105 duration-500"
 							
 						>
 							Mint Collection
@@ -19,13 +19,13 @@ export default function Creator() {
 					</Link>
 
 					<Link href={"/showContent"}>
-					<h2 className="m-20 text-xl border-2 p-20 rounded-lg border-black w-[20%] text-center transition ease-in-out hover:scale-105 duration-500">
+					<h2 className="m-20 text-xl p-20 rounded-lg bg-white  shadow-3xl w-[20%] text-center transition ease-in-out hover:scale-105 duration-500">
 						See Existing Collection
 					</h2>
 					</Link>
 					
 					<Link href={"/addContent"}>
-					<h2 className="m-20 text-xl border-2 p-20 rounded-lg border-black w-[20%] text-center transition ease-in-out hover:scale-105 duration-500">
+					<h2 className="m-20 text-xl bg-white shadow-3xl p-20 rounded-lg w-[20%] text-center transition ease-in-out hover:scale-105 duration-500">
 						Add Exclusive Content for Collection
 					</h2>
 					</Link>

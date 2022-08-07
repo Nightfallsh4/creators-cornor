@@ -10,14 +10,14 @@ export default function Fan() {
 			{isWeb3Enabled && account ? (
 				<div className="flex justify-evenly">
 					<Link href={"/showContent"}>
-						<h2 className="m-20 text-xl border-2 p-20 rounded-lg border-black w-[20%] text-center transition ease-in-out hover:scale-105 duration-500">
+						<h2 className="m-20 text-xl p-20 rounded-lg bg-white w-[20%] text-center transition ease-in-out hover:scale-105 duration-500 shadow-3xl">
 							See Your NFT Collection
 						</h2>
 					</Link>
 
 					<Link href={"/seeContent"}>
-						<h2 className="m-20 text-xl border-2 p-20 rounded-lg border-black w-[20%] text-center transition ease-in-out hover:scale-105 duration-500">
-							See Exclusive Content for things you own
+						<h2 className="m-20 text-xl p-20 rounded-lg bg-white w-[20%] text-center transition ease-in-out hover:scale-105 duration-500 shadow-3xl">
+							See Exclusive Content
 						</h2>
 					</Link>
 				</div>

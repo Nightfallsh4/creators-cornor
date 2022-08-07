@@ -21,7 +21,8 @@ function MyApp({ Component, pageProps }) {
 	return (
 		<MoralisProvider initializeOnMount={false}>
 			{/* <WagmiConfig client={client}> */}
-				<div className="p-20">
+				<div className="p-20 bg-slate-100 min-h-full">
+				<div className="pb-20">
 					<Head>
 						<title>Creators Content</title>
 						<meta
@@ -32,6 +33,7 @@ function MyApp({ Component, pageProps }) {
 					</Head>
 					<Header />
 					<Component {...pageProps} />
+					</div>
 				</div>
 			{/* </WagmiConfig> */}
 		</MoralisProvider>
