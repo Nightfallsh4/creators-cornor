@@ -1,5 +1,5 @@
 import Link from "next/link"
-import MintModal from "./MintModal"
+
 
 export default function Home() {
 	return (

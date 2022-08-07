@@ -108,14 +108,6 @@ export default function MintModal() {
 						variant="outlined"
 						onChange={imageChange}
 					/>
-					{/* <button
-						className="border-black border-2 my-5 rounded-lg p-5"
-						onClick={() => {
-							connectToRinkeby()
-						}}
-					>
-						Connect to Metamask
-					</button> */}
 					<button
 						className="border-black border-2 my-5 rounded-lg p-5 hover:bg-slate-300"
 						onClick={mintContract}

@@ -2,26 +2,11 @@ import { MoralisProvider } from "react-moralis"
 import "../styles/globals.css"
 import Head from "next/head"
 import Header from "../components/Header"
-// import { chain } from "wagmi"
-// import { WagmiConfig, createClient, configureChains } from "wagmi"
-// import { publicProvider } from "wagmi/providers/public"
-
-// const { provider, webSocketProvider } = configureChains(
-// 	[chain.rinkeby, chain.ropsten],
-// 	[publicProvider()],
-// )
-
-// const client = createClient({
-// 	autoConnect: true,
-// 	provider,
-// 	webSocketProvider,
-// })
 
 function MyApp({ Component, pageProps }) {
 	return (
 		<MoralisProvider initializeOnMount={false}>
-			{/* <WagmiConfig client={client}> */}
-				<div className="p-20 bg-slate-100 min-h-full">
+			<div className="p-20 bg-slate-100 min-h-full">
 				<div className="pb-20">
 					<Head>
 						<title>Creators Content</title>
@@ -33,9 +18,8 @@ function MyApp({ Component, pageProps }) {
 					</Head>
 					<Header />
 					<Component {...pageProps} />
-					</div>
 				</div>
-			{/* </WagmiConfig> */}
+			</div>
 		</MoralisProvider>
 	)
 }
