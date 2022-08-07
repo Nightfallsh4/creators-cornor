@@ -1,4 +1,6 @@
 import {
+	CircularProgress,
+	Fade,
 	FormControl,
 	Input,
 	InputLabel,
@@ -15,6 +17,8 @@ export default function addContent() {
 	const [condition, setCondition] = useState("")
 	const [input, setInput] = useState("")
 	const [selectedFile, setSelectedFile] = useState(null)
+	const [loading, setLoading] = useState(false)
+
 	function handleChange(event) {
 		setCondition(event.target.value)
 	}
@@ -101,34 +105,25 @@ export default function addContent() {
 		const authSig = await LitJsSdk.checkAndSignAuthMessage({ chain })
 		console.log("Authenticated MEssage:- ")
 		console.log(authSig)
-		// const { encryptedFile, symmetricKey } =
-		// 	await LitJsSdk.encryptFileAndZipWithMetadata({
-		// 		authSig: authSig,
-		// 		accessControlConditions: accessControlConditions,
-		// 		file: selectedFile,
-		// 		LitNodeClient: client,
-		// 		chain: chain,
-		// 	})
-		const { zipBlob,encryptedSymmetricKey, symmetricKey } = await LitJsSdk.encryptFileAndZipWithMetadata({
-			file: selectedFile,
-			authSig: authSig, 
-			accessControlConditions: accessControlConditions,
-			chain: chain,
-			litNodeClient: window.litNodeClient,
-			unifiedAccessControlConditions: [accessControlConditions]
-		})
+
+		const { zipBlob, encryptedSymmetricKey, symmetricKey } =
+			await LitJsSdk.encryptFileAndZipWithMetadata({
+				file: selectedFile,
+				authSig: authSig,
+				accessControlConditions: accessControlConditions,
+				chain: chain,
+				litNodeClient: window.litNodeClient,
+				unifiedAccessControlConditions: [accessControlConditions],
+			})
+
 		console.log("Symmetric Key :- ")
 		console.log(symmetricKey)
-		// const encryptedSymmetricKey = await window.litNodeClient.saveEncryptionKey({
-		// 	accessControlConditions: accessControlConditions,
-		// 	symmetricKey: symmetricKey,
-		// 	authSig: authSig,
-		// 	chain: chain,
-		// })
+
 		console.log("Encrypted Symmetric Key:-")
 		console.log(encryptedSymmetricKey)
 		console.log("Enxrypted File")
-		console.log(zipBlob);
+		console.log(zipBlob)
+
 		return {
 			zipBlob,
 			encryptedSymmetricKey: LitJsSdk.uint8arrayToString(
@@ -140,21 +135,22 @@ export default function addContent() {
 	}
 
 	async function uploadIpfs() {
+		setLoading(true)
 		const token = process.env.NEXT_PUBLIC_WEB3_STORAGE
 		const web3Client = new Web3Storage({ token: token })
+
 		console.log("Getting Encrypted FIle and key...")
 		const { zipBlob, encryptedSymmetricKey, accessControlConditions } =
 			await encrypt()
 		console.log("Done getting Encrypted FIle and key")
+
 		console.log("Putting files on ipfs.....")
-		const cid = await web3Client.put([
-			new File([zipBlob], "upload.zip"),
-			// new File([encryptedSymmetricKey], "encryptedSymmetric.txt"),
-			// new File([accessControlConditions], "accessCOntrolConditions.json"),
-		])
+		const cid = await web3Client.put([new File([zipBlob], "upload.zip")])
+
 		console.log("Uploaded to IPFS successfully. CID is :- ")
 		console.log(cid)
-        alert(`YOUR FIles have been encrypted with LIT and Uploaded to IPFS ${cid}`)
+		setLoading(false)
+		alert(`Your Files have been encrypted with LIT and Uploaded to IPFS heres is your CID:- ${cid}`)
 	}
 
 	return (
@@ -164,9 +160,7 @@ export default function addContent() {
 				<div className="mx-5">
 					<Box sx={{ minWidth: 250 }}>
 						<FormControl fullWidth>
-							<InputLabel>
-								Select Condition
-							</InputLabel>
+							<InputLabel>Select Condition</InputLabel>
 							<Select
 								value={condition}
 								label="Select Condition"
@@ -203,6 +197,17 @@ export default function addContent() {
 				>
 					Publish to LIT and IPFS
 				</button>
+				<Box sx={{ height: 40 }}>
+					<Fade
+						in={loading}
+						style={{
+							transitionDelay: loading ? "800ms" : "0ms",
+						}}
+						unmountOnExit
+					>
+						<CircularProgress />
+					</Fade>
+				</Box>
 			</div>
 		</div>
 	)

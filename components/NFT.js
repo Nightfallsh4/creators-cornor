@@ -80,15 +80,20 @@ export default function NFT(props) {
 		<div className="w-80 h-96 mx-14 mb-44">
 			<Media />
 			<div className="bg-black p-5">
-            {address == "0x57f1887a8bf19b14fc0df6fd9b2acc9af147ea85" ? <h2 className="text-white">NFT:- ENS</h2> :<h2 className="text-white">NFT:- {name}</h2>}
-				
+				{address == "0x57f1887a8bf19b14fc0df6fd9b2acc9af147ea85" ? (
+					<h2 className="text-white">NFT:- ENS</h2>
+				) : (
+					<h2 className="text-white">NFT:- {name}</h2>
+				)}
+
 				<h2 className="text-white">
 					Contract:- {address.slice(0, 8)}.....
 					{address.slice(address.length - 6)}
 				</h2>
 				{tokenId.length > 15 ? (
 					<h2 className="text-white">
-						Token ID- {tokenId.slice(0, 8)} ..... {tokenId.slice(tokenId.length - 6)}
+						Token ID- {tokenId.slice(0, 8)} .....{" "}
+						{tokenId.slice(tokenId.length - 6)}
 					</h2>
 				) : (
 					<h2 className="text-white">Token ID :- {tokenId}</h2>

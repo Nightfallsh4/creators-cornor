@@ -1,25 +1,21 @@
-import { TextField } from "@mui/material"
+import { CircularProgress, Fade, Skeleton, TextField } from "@mui/material"
 import { useState } from "react"
-import { Web3Storage } from "web3.storage"
+
 import LitJsSdk from "lit-js-sdk"
+import { Box } from "@mui/system"
 
 export default function showContent() {
 	const [input, setInput] = useState("")
 	const [image, setImage] = useState([])
 	const [meta, setMeta] = useState("")
 	const [open, setOpen] = useState(false)
+	const [loading, setLoading] = useState(false)
+
 	function inputChange(event) {
 		setInput(event.target.value)
 	}
 
 	async function getFilesFromIPFS(cid) {
-		// const token = process.env.NEXT_PUBLIC_WEB3_STORAGE
-		// const web3Client = new Web3Storage({ token: token })
-		// console.log("Getting Files From IPFS....")
-		// const res = await web3Client.get(cid) // Web3Response
-		// const files = await res.files() // Web3File[]
-		// console.log("Got Files from IPFS SUccessfully!")
-		// console.log(files)
 		console.log("Getting files from ipfs.....")
 		const data = await fetch(`https://ipfs.io/ipfs/${cid}/upload.zip`)
 			.then((response) => {
@@ -37,6 +33,7 @@ export default function showContent() {
 	}
 
 	async function decrypt(cid) {
+		setLoading(true)
 		const client = new LitJsSdk.LitNodeClient()
 		await client.connect()
 		window.litNodeClient = client
@@ -64,6 +61,7 @@ export default function showContent() {
 		const blob = new Blob([decryptedFile])
 		const url = URL.createObjectURL(blob)
 
+		setLoading(false)
 		setImage(url)
 		setMeta(metadata)
 		setOpen(true)
@@ -108,11 +106,32 @@ export default function showContent() {
 				>
 					Get files
 				</button>
+				<Box sx={{ height: 30 }}>
+					<Fade
+						in={loading}
+						style={{
+							transitionDelay: loading ? "800ms" : "0ms",
+						}}
+						unmountOnExit
+					>
+						<CircularProgress />
+					</Fade>
+				</Box>
 			</div>
 			{open ? (
 				<div className="my-10 flex justify-center">
 					<Media />
 				</div>
+			) : null}
+			{loading ? (
+				<Box sx={{ width: "100%" }}>
+					<Skeleton animation="wave" />
+					<Skeleton animation="wave" />
+					<Skeleton animation="wave" />
+					<Skeleton animation="wave" />
+					<Skeleton animation="wave" />
+					<Skeleton animation="wave" />
+				</Box>
 			) : null}
 		</div>
 	)

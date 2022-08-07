@@ -2,12 +2,13 @@ import { useState } from "react"
 import { ZDK } from "@zoralabs/zdk"
 import NFT from "../components/NFT"
 import { useMoralis } from "react-moralis"
+import { Box, CircularProgress, Fade, Skeleton } from "@mui/material"
 
 let nfts
 export default function showContent() {
 	const { isWeb3Enabled, account } = useMoralis()
 	const [openNft, setNft] = useState(false)
-	const [address, setAddress] = useState("")
+	const [loading, setLoading] = useState(false)
 	const API_ENDPOINT = "https://api.zora.co/graphql"
 
 	const zdk = new ZDK(API_ENDPOINT)
@@ -16,18 +17,19 @@ export default function showContent() {
 		where: {
 			ownerAddresses: [account, "zeneca.eth"],
 		},
-		sort: { // Optional, sorts the response by ascending tokenIds
-			sortDirection: "ASC", 
-			sortKey: "MINTED"
-		  },
+		sort: {
+			sortDirection: "ASC",
+			sortKey: "MINTED",
+		},
 		pagination: { limit: 12 },
 	}
 
 	async function getNFTs() {
+		setLoading(true)
 		const response = await zdk.tokens(args)
 		console.log(response.tokens.nodes)
 		nfts = response.tokens.nodes
-
+		setLoading(false)
 		setNft(true)
 	}
 
@@ -51,9 +53,21 @@ export default function showContent() {
 						<button
 							className="mx-5 border-2 p-4 rounded-lg border-black hover:bg-slate-300"
 							onClick={getNFTs}
+							disabled={loading}
 						>
 							Show Your NFTs
 						</button>
+						<Box sx={{ height: 40 }}>
+							<Fade
+								in={loading}
+								style={{
+									transitionDelay: loading ? "800ms" : "0ms",
+								}}
+								unmountOnExit
+							>
+								<CircularProgress />
+							</Fade>
+						</Box>
 					</div>
 				</div>
 			) : (
@@ -62,9 +76,19 @@ export default function showContent() {
 			{openNft ? (
 				<div>
 					<div className="flex flex-wrap justify-between rounded-lg ">
-						{nfts.length==0? <h2>No NFTS found</h2>:nfts.map(nft)}
+						{nfts.length == 0 ? <h2>No NFTS found</h2> : nfts.map(nft)}
 					</div>
 				</div>
+			) : null}
+			{loading ? (
+				<Box sx={{ width:"100%" }}>
+					<Skeleton animation="wave" />
+					<Skeleton animation="wave" />
+					<Skeleton animation="wave" />
+					<Skeleton animation="wave" />
+					<Skeleton animation="wave" />
+					<Skeleton animation="wave" />
+				</Box>
 			) : null}
 		</div>
 	)
