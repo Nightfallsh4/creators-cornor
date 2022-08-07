@@ -109,21 +109,28 @@ export default function addContent() {
 		// 		LitNodeClient: client,
 		// 		chain: chain,
 		// 	})
-		const { encryptedFile, symmetricKey } = await LitJsSdk.encryptFile({
+		const { zipBlob,encryptedSymmetricKey, symmetricKey } = await LitJsSdk.encryptFileAndZipWithMetadata({
 			file: selectedFile,
+			authSig: authSig, 
+			accessControlConditions: accessControlConditions,
+			chain: chain,
+			litNodeClient: window.litNodeClient,
+			unifiedAccessControlConditions: [accessControlConditions]
 		})
 		console.log("Symmetric Key :- ")
 		console.log(symmetricKey)
-		const encryptedSymmetricKey = await window.litNodeClient.saveEncryptionKey({
-			accessControlConditions: accessControlConditions,
-			symmetricKey: symmetricKey,
-			authSig: authSig,
-			chain: chain,
-		})
+		// const encryptedSymmetricKey = await window.litNodeClient.saveEncryptionKey({
+		// 	accessControlConditions: accessControlConditions,
+		// 	symmetricKey: symmetricKey,
+		// 	authSig: authSig,
+		// 	chain: chain,
+		// })
 		console.log("Encrypted Symmetric Key:-")
 		console.log(encryptedSymmetricKey)
+		console.log("Enxrypted File")
+		console.log(zipBlob);
 		return {
-			encryptedFile,
+			zipBlob,
 			encryptedSymmetricKey: LitJsSdk.uint8arrayToString(
 				encryptedSymmetricKey,
 				"base16",
@@ -136,14 +143,14 @@ export default function addContent() {
 		const token = process.env.NEXT_PUBLIC_WEB3_STORAGE
 		const web3Client = new Web3Storage({ token: token })
 		console.log("Getting Encrypted FIle and key...")
-		const { encryptedFile, encryptedSymmetricKey, accessControlConditions } =
+		const { zipBlob, encryptedSymmetricKey, accessControlConditions } =
 			await encrypt()
 		console.log("Done getting Encrypted FIle and key")
 		console.log("Putting files on ipfs.....")
 		const cid = await web3Client.put([
-			new File([encryptedFile], "upload.png"),
-			new File([encryptedSymmetricKey], "encryptedSymmetric.txt"),
-			new File([accessControlConditions], "accessCOntrolConditions.json"),
+			new File([zipBlob], "upload.zip"),
+			// new File([encryptedSymmetricKey], "encryptedSymmetric.txt"),
+			// new File([accessControlConditions], "accessCOntrolConditions.json"),
 		])
 		console.log("Uploaded to IPFS successfully. CID is :- ")
 		console.log(cid)

@@ -14,8 +14,12 @@ export default function showContent() {
 
 	const args = {
 		where: {
-			ownerAddresses: ["rustboot.eth", account, "superphiz.eth"],
+			ownerAddresses: [account, "zeneca.eth"],
 		},
+		sort: { // Optional, sorts the response by ascending tokenIds
+			sortDirection: "ASC", 
+			sortKey: "MINTED"
+		  },
 		pagination: { limit: 12 },
 	}
 
@@ -58,7 +62,7 @@ export default function showContent() {
 			{openNft ? (
 				<div>
 					<div className="flex flex-wrap justify-between rounded-lg ">
-						{nfts.map(nft)}
+						{nfts.length==0? <h2>No NFTS found</h2>:nfts.map(nft)}
 					</div>
 				</div>
 			) : null}
